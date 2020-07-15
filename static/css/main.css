@@ -40,6 +40,9 @@ p.lead {
   background: #555;
   color: #FFF;
 }
+input[type=checkbox] {
+  transform: scale(1.5);
+}
 /* Main elements end */
 
 
