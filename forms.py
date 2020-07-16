@@ -160,8 +160,8 @@ class ArtistForm(FlaskForm):
     website = StringField(
         'website', validators=[URL()]
     )
-    seeking_venue = BooleanField(
-        'seeking_talent', validators=[DataRequired()]
+    seeking_venue = RadioField(
+        'seeking_venue', choices=[(True,'Yes'),(False,'No')], validators=[optional()]
     )
     seeking_description = TextAreaField(
         'seeking_description', validators=[optional(), length(max=250)]
