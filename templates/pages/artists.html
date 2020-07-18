@@ -3,13 +3,19 @@
 {% block content %}
 <ul class="items">
 	{% for artist in artists %}
-	<li>
+	<li style="display: flex; justify-content: space-between">
 		<a href="/artists/{{ artist.id }}">
 			<i class="fas fa-users"></i>
 			<div class="item">
 				<h5>{{ artist.name }}</h5>
 			</div>
 		</a>
+		<div>
+			<a href="/artists/{{ artist.id }}/edit" class="edit-btn"><i class="fas fa-edit"></i></a>
+			<a href="javascript:void(0)" class="delete-btn" style="color: red"
+			   onclick="deleteVenue(event, 'artists')"
+			   data-id="{{ artist.id }}"><i class="fas fa-trash"></i></a>
+		</div>
 	</li>
 	{% endfor %}
 </ul>
