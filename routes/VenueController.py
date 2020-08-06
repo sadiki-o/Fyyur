@@ -1,10 +1,8 @@
 from models import Artist, Venue, db
 from sqlalchemy import asc
 from flask import (
-   Flask,
    render_template,
    request,
-   Response,
    flash,
    redirect,
    url_for,
@@ -15,10 +13,9 @@ from forms import VenueForm
 import sys
 import json
 
-
 venue_blueprint = Blueprint('venues', __name__)
 
-#  Venues
+#  Venue routes
 #  ----------------------------------------------------------------
 class VenueController():
 
@@ -49,17 +46,16 @@ class VenueController():
         term = "%{}%".format(term)
         query_data = Venue.query.filter(Venue.name.ilike(term) | Venue.city.ilike(term) | Venue.state.ilike(term)).all()
         data = []
-        response = {}
         for item in query_data:
             data.append({
                 "id": item.id,
                 "name": item.name,
                 "num_upcoming_shows": 0
             })
-            response={
-                "count": len(query_data),
-                "data": data
-            }
+        response={
+            "count": len(query_data),
+            "data": data
+        }
         print(response)
         return render_template('pages/search_venues.html',
                                results=response, search_term=request.form.get('search_term', ''))
