@@ -1,11 +1,13 @@
 from datetime import datetime
 from flask_wtf import FlaskForm
 from wtforms import StringField, SelectField, SelectMultipleField, DateTimeField, BooleanField
-from wtforms.validators import DataRequired, AnyOf, URL
+from wtforms.validators import DataRequired, AnyOf, URL, Regexp
 
-
-genres = ['Alternative', 'Blues', 'Classical', 'Country', 'Electronic', 'Folk', 'Funk', 'Hip-Hop', 'Heavy Metal', 'Instrumental', 'Jazz', 'Musical Theatre', 'Pop', 'Punk', 'R&B', 'Reggae', 'Rock n Roll', 'Soul', 'Other']
-states = ['AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'DC', 'FL', 'GA', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY']
+genres = ['Alternative', 'Blues', 'Classical', 'Country', 'Electronic', 'Folk', 'Funk', 'Hip-Hop', 'Heavy Metal',
+          'Instrumental', 'Jazz', 'Musical Theatre', 'Pop', 'Punk', 'R&B', 'Reggae', 'Rock n Roll', 'Soul', 'Other']
+states = ['AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'DC', 'FL', 'GA', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY',
+          'LA', 'ME', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'MD', 'MA', 'MI', 'MN',
+          'MS', 'MO', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY']
 
 
 class ShowForm(FlaskForm):
@@ -23,6 +25,7 @@ class ShowForm(FlaskForm):
         default=datetime.today()
     )
 
+
 class VenueForm(FlaskForm):
     name = StringField(
         'name', validators=[DataRequired()]
@@ -34,14 +37,18 @@ class VenueForm(FlaskForm):
         'state',
         choices=states,
         validators=[
-        DataRequired(),
-        AnyOf(states)]
+            DataRequired(),
+            AnyOf(states)]
     )
     address = StringField(
         'address', validators=[DataRequired()]
     )
     phone = StringField(
-        'phone'
+        'phone',
+        [DataRequired(),
+         Regexp("^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$"
+                , message='Invalid phone number')
+         ]
     )
     image_link = StringField(
         'image_link',
@@ -57,19 +64,19 @@ class VenueForm(FlaskForm):
         ]
     )
     facebook_link = StringField(
-        'facebook_link', validators=[URL()]
+        'facebook_link',
+        validators=[URL()]
     )
     website = StringField(
         'website_link',
         validators=[URL()]
     )
 
-    seeking_talent = BooleanField( 'seeking_talent' )
+    seeking_talent = BooleanField('seeking_talent')
 
     seeking_description = StringField(
         'seeking_description'
     )
-
 
 
 class ArtistForm(FlaskForm):
@@ -85,13 +92,15 @@ class ArtistForm(FlaskForm):
         'state',
         choices=states,
         validators=[
-        DataRequired(),
-        AnyOf(states)]
+            DataRequired(),
+            AnyOf(states)]
     )
     phone = StringField(
-        # TODO implement validation logic for phone
         'phone',
-        validators=[DataRequired()],
+        [DataRequired(),
+         Regexp("^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$"
+                , message='Invalid phone number')
+         ]
 
     )
     image_link = StringField(
@@ -103,22 +112,21 @@ class ArtistForm(FlaskForm):
         choices=genres,
         validate_choice=True,
         validators=[
-        DataRequired(),
+            DataRequired(),
         ]
-     )
+    )
     facebook_link = StringField(
         'facebook_link',
         validators=[URL()]
-     )
+    )
 
     website = StringField(
         'website_link',
         validators=[URL()]
-     )
+    )
 
-    seeking_venue = BooleanField( 'seeking_venue' )
+    seeking_venue = BooleanField('seeking_venue')
 
     seeking_description = StringField(
         'seeking_description'
-     )
-
+    )

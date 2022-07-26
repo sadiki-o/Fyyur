@@ -2,6 +2,7 @@ from forms import VenueForm
 from models.Venue import Venue
 from flask import flash, render_template, Blueprint, request, redirect, url_for
 from models.db_file import db
+from models.Show import Show
 import sys
 from datetime import datetime
 
@@ -41,19 +42,29 @@ class VenueController:
     @venue_bp.route('/<int:venue_id>')
     def show_venue(venue_id):
         v = Venue.query.get(venue_id)
-        past_shows = []
         upcoming_shows = []
-        for s in v.shows:
-            temp_show = {
-                "artist_id": s.artist_id,
-                "artist_name": s.artist.name,
-                "artist_image_link": s.artist.image_link,
-                "start_time": s.start_time.strftime('%Y-%m-%d %H:%M:%S'),
-            }
-            if s.start_time < datetime.now():
-                past_shows.append(temp_show)
-            else:
-                upcoming_shows.append(temp_show)
+        past_shows = []
+
+        past_shows_query = db.session.query(Show).join(Venue).filter(Show.venue_id == venue_id).filter(
+            Show.start_time < datetime.now()).all()
+        for show in past_shows_query:
+            past_shows.append({
+                "artist_id": show.artist_id,
+                "artist_name": show.artist.name,
+                "artist_image_link": show.artist.image_link,
+                "start_time": show.start_time.strftime('%Y-%m-%d %H:%M:%S'),
+            })
+
+        upcoming_shows_query = db.session.query(Show).join(Venue).filter(Show.venue_id == venue_id).filter(
+            Show.start_time > datetime.now()).all()
+
+        for show in upcoming_shows_query:
+            upcoming_shows.append({
+                "artist_id": show.artist_id,
+                "artist_name": show.artist.name,
+                "artist_image_link": show.artist.image_link,
+                "start_time": show.start_time.strftime('%Y-%m-%d %H:%M:%S'),
+            })
 
         final_venue = {
             "past_shows": past_shows,

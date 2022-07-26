@@ -4,6 +4,8 @@ from models.Artist import Artist
 import sys
 from datetime import datetime
 from models.db_file import db
+from models.Show import Show
+from models.Venue import Venue
 from sqlalchemy import func
 
 artist_bp = Blueprint('artists', __name__)
@@ -41,17 +43,28 @@ class ArtistController:
         a = Artist.query.get(artist_id)
         upcoming_shows = []
         past_shows = []
-        for show in a.shows:
-            show_data = {
-                "artist_id": show.artist_id,
-                "artist_name": show.artist.name,
-                "artist_image_link": show.artist.image_link,
+
+        past_shows_query = db.session.query(Show.start_time, Venue.id, Venue.name, Venue.image_link).join(Venue).filter(Show.artist_id == artist_id).filter(
+            Show.start_time < datetime.now()).all()
+        print(past_shows_query)
+        for show in past_shows_query:
+            past_shows.append({
+                "venue_id": show.id,
+                "venue_name": show.name,
+                "venue_image_link": show.image_link,
                 "start_time": show.start_time.strftime('%Y-%m-%d %H:%M:%S'),
-            }
-            if show.start_time < datetime.now():
-                past_shows.append(show_data)
-            else:
-                upcoming_shows.append(show_data)
+            })
+
+        upcoming_shows_query = db.session.query(Show.start_time, Venue.id, Venue.name, Venue.image_link).join(Venue).filter(Show.artist_id == artist_id).filter(
+            Show.start_time > datetime.now()).all()
+
+        for show in upcoming_shows_query:
+            upcoming_shows.append({
+                "artist_id": show.id,
+                "artist_name": show.name,
+                "artist_image_link": show.image_link,
+                "start_time": show.start_time.strftime('%Y-%m-%d %H:%M:%S'),
+            })
 
         final_artist = {
             "past_shows": past_shows,
