@@ -57,6 +57,7 @@
                 (request.endpoint == 'venues.search_venues') or
                 (request.endpoint == 'venues.show_venue') %}
               <form class="search" method="post" action="/venues/search">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                 <input class="form-control"
                   type="search"
                   name="search_term"
@@ -68,6 +69,7 @@
                 (request.endpoint == 'artists.search_artists') or
                 (request.endpoint == 'artists.show_artist') %}
               <form class="search" method="post" action="/artists/search">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                 <input class="form-control"
                   type="search"
                   name="search_term"
@@ -99,6 +101,22 @@
           {% endfor %}
         {% endif %}
       {% endwith %}
+      <!--   display errors list   -->
+      {% if form %}
+        {% for field, errors in form.errors.items() %}
+          <div class="alert alert-block alert-danger fade in">
+            <a class="close" data-dismiss="alert">&times;</a>
+              {{ form[field].label }}: {{ ', '.join(errors) }}
+          </div>
+        {% endfor %}
+      {% endif %}
+
+      {% if error %}
+        <div class="alert alert-block alert-danger fade in">
+          <a class="close" data-dismiss="alert">&times;</a>
+            {{ error }}
+        </div>
+      {% endif %}
 
       {% block content %}{% endblock %}
       

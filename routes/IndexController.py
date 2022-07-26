@@ -1,14 +1,23 @@
-from models import Artist, Venue
-from sqlalchemy import asc
+from models.Artist import Artist
+from models.Venue import Venue
+from sqlalchemy import desc
 from flask import render_template, Blueprint
 
-index_blueprint = Blueprint('home', __name__)
+index_bp = Blueprint('home', __name__)
 
+
+# Home page
+#  ----------------------------------------------------------------
 class IndexController():
-    @index_blueprint.route('/')
+    #  Home Page
+    #  ----------------------------------------------------------------
+    @index_bp.route('/')
     def index():
-        most_recent_artists = Artist.query.order_by(asc(Artist.created_at)).limit(10).all()
-        most_recent_venues = Venue.query.order_by(asc(Venue.created_at)).limit(10).all()
-        return render_template('pages/home.html', most_recent_artists=most_recent_artists,
-                                                  most_recent_venues=most_recent_venues)
-
+        # implemented the bonus feature that shows recent artists and venues
+        recent_artists = Artist.query.order_by(Artist.created_at.desc()).limit(10).all()
+        recent_venues = Venue.query.order_by(Venue.created_at.desc()).limit(10).all()
+        results = {
+            "recent_artists": recent_artists,
+            "recent_venues": recent_venues
+        }
+        return render_template('pages/home.html', results=results)

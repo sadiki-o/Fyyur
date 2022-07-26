@@ -1,5 +1,6 @@
 import os
-SECRET_KEY = os.urandom(32)
+
+SECRET_KEY = os.urandom(32)  # required for CSRF
 # Grabs the folder where the script runs.
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -10,5 +11,5 @@ DEBUG = True
 
 
 # TODO IMPLEMENT DATABASE URL
-SQLALCHEMY_DATABASE_URI = 'postgres://fyyur_user:0123456@localhost:5432/fyyur_db'
+SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:postgres@localhost:5432/fyyur_db'
 SQLALCHEMY_TRACK_MODIFICATIONS = False

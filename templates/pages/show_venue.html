@@ -47,6 +47,13 @@
 	</div>
 </div>
 <section>
+	<form action="/venues/delete" method="post" style="display:inline;" >
+	  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+	  <input type=hidden value="{{ venue.id }}" name="id" />
+	  <input type=submit class="btn btn-danger" value="Delete"/>
+	</form>
+
+	<button class="btn btn-warning" onclick="window.location='/venues/{{venue.id}}/edit'">Edit</button>
 	<h2 class="monospace">{{ venue.upcoming_shows_count }} Upcoming {% if venue.upcoming_shows_count == 1 %}Show{% else %}Shows{% endif %}</h2>
 	<div class="row">
 		{%for show in venue.upcoming_shows %}
