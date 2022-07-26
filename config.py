@@ -1,4 +1,6 @@
 import os
+from settings import DB_NAME, DB_USER, DB_PASSWORD
+
 
 SECRET_KEY = os.urandom(32)  # required for CSRF
 # Grabs the folder where the script runs.
@@ -11,5 +13,5 @@ DEBUG = True
 
 
 # TODO IMPLEMENT DATABASE URL
-SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:postgres@localhost:5432/fyyur_db'
+SQLALCHEMY_DATABASE_URI = f'postgresql://{DB_USER}:{DB_PASSWORD}@localhost:5432/{DB_NAME}'
 SQLALCHEMY_TRACK_MODIFICATIONS = False
