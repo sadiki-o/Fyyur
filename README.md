@@ -78,9 +78,9 @@ To start and run the local development server,
   ```
 3.Create an .env file and store the following in it
   ```
-    DATABASE_NAME="<Your database name>"
-    DATABASE_USER="<Your database user name>"
-    DATABASE_PASSWORD="<Your database user password>"
+    DB_NAME="<Your database name>"
+    DB_USER="<Your database user name>"
+    DB_PASSWORD="<Your database user password>"
   ```
 
 4. Run the development server:
