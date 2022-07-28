@@ -76,12 +76,18 @@ To start and run the local development server,
   ```
   $ pip install -r requirements.txt
   ```
+3.Create an .env file and store the following in it
+  ```
+    DATABASE_NAME="<Your database name>"
+    DATABASE_USER="<Your database user name>"
+    DATABASE_PASSWORD="<Your database user password>"
+  ```
 
-3. Run the development server:
+4. Run the development server:
   ```
   $ export FLASK_APP=myapp
   $ export FLASK_ENV=development # enables debug mode
   $ python3 app.py
   ```
 
-4. Navigate to Home page [http://localhost:5000](http://localhost:5000)
+5. Navigate to Home page [http://localhost:5000](http://localhost:5000)
